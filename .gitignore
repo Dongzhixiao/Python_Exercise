@@ -1,43 +1,85 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# Folder config file
-Desktop.ini
+# C extensions
+*.so
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
 
-# Windows shortcuts
-*.lnk
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# =========================
-# Operating System Files
-# =========================
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*,cover
+.hypothesis/
 
-# OSX
-# =========================
+# Translations
+*.mo
+*.pot
 
-.DS_Store
-.AppleDouble
-.LSOverride
+# Django stuff:
+*.log
+local_settings.py
 
-# Thumbnails
-._*
+# Flask instance folder
+instance/
 
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+# Scrapy stuff:
+.scrapy
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# IPython Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# dotenv
+.env
+
+# virtualenv
+venv/
+ENV/
+
+# Spyder project settings
+.spyderproject

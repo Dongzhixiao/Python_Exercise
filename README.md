@@ -9,4 +9,4 @@ Tutorial
 [![Language](https://img.shields.io/badge/Language-Python-yellow.svg)](https://www.python.org/)
 [![IDE](https://img.shields.io/badge/Framework-Spyder-brightgreen.svg)](https://pypi.python.org/pypi/spyder)
 
-A simple sofeware to datamining use python language
+Some simple python exercise programs to data mining some datas.

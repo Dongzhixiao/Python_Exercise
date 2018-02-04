@@ -28,7 +28,7 @@ def drawTypeCorrlation(fileName):
 def caculateLogVector(fileName):
      # 读取数据
     df = pd.read_excel(fileName)
-    pca = skldec.PCA(n_components = 0.95)
+    pca = skldec.PCA(n_components = 0.90)
     pca.fit(df)   #主城分析时每一行是一个输入数据
     result = pca.transform(df)
     df_origin = pca.inverse_transform(result)
@@ -48,10 +48,10 @@ def caculateLogVector(fileName):
     
     x = np.linspace(1, Y_a.shape[1] , Y_a.shape[1])
     plt.scatter(x,Y_a_2norm_sqr, s=2)
-    plt.xlabel(u'时间片',{'color':'r'})
-    plt.ylabel(u'Q值',{'color':'r'})
+    plt.xlabel(u'Sample Datas',{'color':'r'})
+    plt.ylabel(u'Q Values',{'color':'r'})
     #plt.hold
-    lineToDraw = caculateQ_Alpha(df,pca,0.95)
+    lineToDraw = caculateQ_Alpha(df,pca,0.05)
     plt.plot(x,[lineToDraw for i in range(Y_a.shape[1])],'-r',label = 'normal',linewidth=1)
     plt.plot(x,[2*lineToDraw for i in range(Y_a.shape[1])],'-g',label = 'slight',linewidth=1)
     plt.plot(x,[4*lineToDraw for i in range(Y_a.shape[1])],'-b',label = 'warning',linewidth=1)
@@ -96,10 +96,14 @@ def caculateQ_Alpha(df,pca,alpha):
     Phi_1 = 0
     Phi_2 = 0
     Phi_3 = 0
+    h_0 = 0
+    if r == pca.explained_variance_.size:  #如果所有数据投影到原空间，则Q值都为零，该方法失效
+        return 0
     for i in range(r,pca.explained_variance_.size):
         Phi_1 = Phi_1 + pca.explained_variance_[i]**1
         Phi_2 = Phi_2 + pca.explained_variance_[i]**2
         Phi_3 = Phi_3 + pca.explained_variance_[i]**3
+#    print(str(Phi_1)+'\t'+str(Phi_2)+'\t'+str(Phi_3))        
     h_0 = 1 - 2*Phi_1*Phi_3/(3*Phi_2**2)
     C_alpha = norm.cdf(alpha)   #得到正态分布alpha的百分位数
     delta2_Alpha = Phi_1*(C_alpha*math.sqrt(2*Phi_2*h_0**2)/Phi_1 + 1 +
@@ -116,7 +120,7 @@ def generateDrawDF(strList,df,AnomalousLine):    #得到可以进行绘画的数
         for j in range(len(levelList)):
             lineNum = levelList[j][0]  #得到行号
             LineSeries = df.iloc[lineNum]  #得到行的序列
-            for k in range(int(LineSeries.size/4.0)):    #int(LineSeries.size/4),int(LineSeries.size/2)
+            for k in range(int(LineSeries.size)):    
                 #print(LineSeries[k],LineSeries.index[k],strList[i])
                 data.append((LineSeries[k],LineSeries.index[k],strList[i]))
                 #下面一行绝对不要用，DataFrame绝对不要动态加行列！！！！
@@ -186,15 +190,15 @@ if __name__ == '__main__':
 #    strList = ['Normal']
     Drawdf = generateDrawDF(strList,df,AnomalousLine)
     
-#    plt.figure()
-#    sns.boxplot(x="type", y="times", hue="level",
-#                     data=Drawdf, palette="Set2")
-#    plt.figure()
-#    result = sns.barplot(x="type", y="times", hue="level", ci = None , capsize=.1, #errwidth = 0,
-#                     data=Drawdf, palette="Set2")
+    plt.figure()
+    sns.boxplot(x="type", y="times", hue="level",
+                     data=Drawdf, palette="Set2")
+    plt.figure()
+    result = sns.barplot(x="type", y="times", hue="level", ci = None , capsize=.1, #errwidth = 0,
+                     data=Drawdf, palette="Set2")
 
-#    plt.figure()
-#    sns.violinplot(x="type", y="times", hue="level",
-#                     data=Drawdf, palette="Set2")
+    plt.figure()
+    sns.violinplot(x="type", y="times", hue="level",
+                     data=Drawdf, palette="Set2")
 
     

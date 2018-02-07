@@ -117,20 +117,24 @@ if __name__ == '__main__':
         listToAnalysis.append(listToStore.copy())
         listToStore.clear()
    #开始进行关联分析     
-    itemsets = dict(oaf.frequent_itemsets(listToAnalysis, .02)) #这里设置支持度
-    rules = oaf.association_rules(itemsets, .5)   #这里设置置信度
+    supportRate = 0.02
+    confidenceRate = 0.5     
+    itemsets = dict(oaf.frequent_itemsets(listToAnalysis, supportRate))
+    rules = oaf.association_rules(itemsets, confidenceRate)
     rules = list(rules)
+    regularNum = len(rules)
     printRules = dealRules(rules)
-    result = list(oaf.rules_stats(rules, itemsets, len(listToAnalysis)))   #下面这个函数改变了rules和itemsets，把rules和itemsets置空！
+    result = list(oaf.rules_stats(rules, itemsets, len(listToAnalysis)))   #下面这个函数改变了rules，把rules用完了！
     printResult = dealResult(result)
-
+    
 #################################################下面将结果保存成excel格式的文件    
     dfToSave = ResultDFToSave(result)
-    dfToSave.to_excel('regular.xlsx')
+    saveRegularName = str(supportRate)+'支持度_'+str(confidenceRate)+'置信度_产生了'+str(regularNum)+'条规则'+'.xlsx'
+    dfToSave.to_excel(saveRegularName)
 
 #######################################################下面是根据不同置信度和关联度得到关联规则数目
     listTable = []
-    supportRate = 0.1
+    supportRate = 0.01
     confidenceRate = 0.1
     for i in range(9):
         support = supportRate*(i+1)

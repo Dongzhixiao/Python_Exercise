@@ -5,7 +5,7 @@ import tensorflow as tf
 import pickle
 
 '''
-注意：后面使用“数据单元”代表数据的一个最小单元，比如训练英文数据就可以的代表一个字符——'a'，训练中文数据就可以的代表一个汉字——'王'etc
+注意：后面使用“数据单元”代表数据的一个最小单元，比如训练英文数据就可以代表一个字符——'a'，训练中文数据就可以代表一个汉字——'王'etc
 代码介绍：
 该文件是一个工具类，用于把一个输入文件根据编码输出对应的一批一批的数据用于RNN/LSTM之类的文本处理神经网络训练，
 用法是先使用TextConverter类编码所有的内容为数据单元对应数字，然后使用batch_generator函数将编码好的数字分批返回
@@ -29,11 +29,10 @@ def batch_generator(arr, n_seqs, n_steps):   #根据输入的arr(这个输入一
             y = np.zeros_like(x)    #返回跟x同形状的n维数组，数据全部都是0
             y[:, :-1], y[:, -1] = x[:, 1:], x[:, 0]
             yield x, y
-
 #如果x是[[48 49 50]
-# [ 0  1  2]]
+#       [ 0  1  2]]
 # 则y是[[49 50 48]
-#  [ 1  2  0]]
+#       [ 1  2  0]]
 
 
 class TextConverter(object):
@@ -63,18 +62,18 @@ class TextConverter(object):
         self.int_to_word_table = dict(enumerate(self.vocab))         #  数字到数据单元字典{0:‘ ’，1:'e',...,20:'c',..}
 
     @property
-    def vocab_size(self):            #这里不理解为啥要加上1？！
+    def vocab_size(self):            #这里增加一个1，为了兼容没有出现的词对应的序号编码
         return len(self.vocab) + 1
 
     def word_to_int(self, word):    #返回数据单元对应的整数
         if word in self.word_to_int_table:
             return self.word_to_int_table[word]
         else:
-            return len(self.vocab)
+            return len(self.vocab)    #如果出现了没有出现的词，则变为<unk>对应的标记
 
     def int_to_word(self, index):    #返回整数对应的数据单元
         if index == len(self.vocab):
-            return '<unk>'
+            return '<unk>'          #没有出现的词被标记为unknown的缩写
         elif index < len(self.vocab):
             return self.int_to_word_table[index]
         else:

@@ -61,7 +61,7 @@ def attention_3d_block(inputs,time_steps,SINGLE_ATTENTION_VECTOR):
 #    time_steps = TIME_STEPS
     a = Permute((2, 1),name='Permute')(inputs)
 #    a = Reshape((input_dim, time_steps))(a) # this line is not useful. It's just to know which dimension is what.
-    a = dense_new.Dense_New(time_steps,use_bias=False,name='My_Layer')(a)    #测试使用自定义层
+    a = dense_new.Dense_New(time_steps,use_bias=False,name='My_Layer',activation='softmax')(a)    #测试使用自定义层
     if SINGLE_ATTENTION_VECTOR:
         a = Lambda(lambda x: K.mean(x, axis=1), name='Dim_Reduction')(a)
         a = RepeatVector(input_dim)(a)

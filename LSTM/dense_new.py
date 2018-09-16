@@ -4,12 +4,12 @@ import numpy as np
 
 import tensorflow as tf
 
-# from keras.activations import linear
+from keras import regularizers, constraints, initializers, activations
 
 class Dense_New(Layer):
 
     def __init__(self, units,
-#                 activation=None,
+                 activation=None,
                  use_bias=True,
 #                 kernel_initializer='glorot_uniform',
 #                 bias_initializer='zeros',
@@ -23,7 +23,7 @@ class Dense_New(Layer):
             kwargs['input_shape'] = (kwargs.pop('input_dim'),)
         super(Dense_New, self).__init__(**kwargs)
         self.units = units
-#        self.activation = activations.get(activation)
+        self.activation = activations.get(activation)
         self.use_bias = use_bias
 #        self.kernel_initializer = initializers.get(kernel_initializer)
 #        self.bias_initializer = initializers.get(bias_initializer)
@@ -63,8 +63,8 @@ class Dense_New(Layer):
         output = K.dot(inputs, tf.multiply(self.kernel,self.mask))
         if self.use_bias:
             output = K.bias_add(output, self.bias)
-#        if self.activation is not None:
-#            output = self.activation(output)
+        if self.activation is not None:
+            output = self.activation(output)
         return output
 
     def compute_output_shape(self, input_shape):
@@ -77,7 +77,7 @@ class Dense_New(Layer):
     def get_config(self):
         config = {
             'units': self.units,
-#            'activation': activations.serialize(self.activation),
+            'activation': activations.serialize(self.activation),
             'use_bias': self.use_bias
 #            'kernel_initializer': initializers.serialize(self.kernel_initializer),
 #            'bias_initializer': initializers.serialize(self.bias_initializer),

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>选择pkl文件并显示的该图片的界面</title>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    </head>
+    <body>
+        <h1 style="font-style:italic">选择pkl文件并显示的该图片的界面</h1>
+        <form method="POST" action="" enctype="multipart/form-data">
+            <input id = "choose-pic-file-button" type="file" name='TheFile'>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="image-show" style="border: 1px solid #ccc; 
+                                    width: 100%; 
+                                    height: 500px;
+                                    background-size: contain; 
+                                    background-repeat: no-repeat; 
+                                    background-position: center center;
+                                    background-image :{{data}};"></div>
+        <p id="info">{{ messages }}</p>
+        <script>
+            "use strict";
+            // alert('jQuery版本：' + $.fn.jquery);
+            // alert(undefined == undefined);
+            var fileInput = $('#choose-pic-file-button');
+            var info = $('#info');
+            var preview = $('#image-show');
+            fileInput.focus(function(){
+                // alert('OK');
+            });
+            fileInput.change(function(){
+                // alert('a');
+                // 清除背景图片:
+                preview.css('backgroundImage','');
+                // 检查文件是否选择:
+                if (!fileInput.val()) {
+                    alert('没有选择文件');
+                    info.text('没有选择文件');
+                    return;
+                }
+                var filename = fileInput.val();
+
+                // alert('data');
+                //ajax发送post请求
+                // var jqxhr = $.post('/', {
+                //     fliename: fileInput.val(),
+                //     check: 1,
+                //     data: data
+                // }).done(function(data){
+                //     return;
+                //     $(document).find("html").html(data);  //用返回的数据刷新整个网页
+                // });
+            });
+        </script>
+    </body>
+</html>

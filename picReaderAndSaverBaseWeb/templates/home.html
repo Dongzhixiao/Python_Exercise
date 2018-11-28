@@ -2,11 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>选择pkl文件并显示的该图片的界面</title>
+        <title>显示图片的小程序</title>
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
     </head>
     <body>
-        <h1 style="font-style:italic">选择pkl文件并显示的该图片的界面</h1>
+        <h1 class="animated infinite pulse delay-2s" align="center">选择pkl文件(matplotlib生成的)并显示该图片的程序~</h1>
         <form method="POST" action="" enctype="multipart/form-data">
             <input id = "choose-pic-file-button" type="file" name='TheFile'>
             <input type="submit" value="Submit">
@@ -44,7 +45,7 @@
                 // alert('data');
                 //ajax发送post请求
                 // var jqxhr = $.post('/', {
-                //     fliename: fileInput.val(),
+                //     fliename: fileInput.val(),  //客户端无法给服务器发送真实的路径，因此无法实现！
                 //     check: 1,
                 //     data: data
                 // }).done(function(data){

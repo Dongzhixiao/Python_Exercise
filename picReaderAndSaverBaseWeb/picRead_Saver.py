@@ -4,6 +4,7 @@ save.
 '''
 import matplotlib.pyplot as plt
 import pickle
+
 def SavePicture(fn):
     """
     A function to save the picture of matplotlib
@@ -12,7 +13,7 @@ def SavePicture(fn):
     ax = plt.subplot(111)   
     with open(fn,'wb') as fid:
         pickle.dump(ax, fid)
-
+    
 
 class PrintAttr(type):
     def __new__(cls,name,bases,attrs):
@@ -36,12 +37,16 @@ class A(object,metaclass=PrintAttr):
 
 
 if __name__ == "__main__":
-    # print('Main function entanss!')
-    # print(__doc__)
-    # plt.hist([1,2]);
-    # SavePicture('C:\\Users\\dell\\Desktop\\aaaaaa.pkl')
+    # picPath = 'F:\\DoctorContent\\log-related\\aLogAnalysisPrograme\\behaviorialAnalysis\\client51分析结果\\1.pkl'
+    # with open(picPath,'rb') as f:
+    #     ax = pickle.load(f)
     # plt.show()
+    # import matplotlib.pyplot as plt
 
-    with open('C:\\Users\\dell\\Desktop\\aaaaaa.pkl','rb') as f:
-        ax = pickle.load(f)
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+    plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+    plt.plot((1, 2, 3), (4, 5, 7))
+    plt.xlabel('横坐标')
+    plt.ylabel('纵坐标')
     plt.show()

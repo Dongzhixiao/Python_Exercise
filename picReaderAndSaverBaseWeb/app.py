@@ -37,6 +37,10 @@ def picToBase(fileName):   #根据文件名返回浏览器background-image对应
     picData = 'url(data:image/jpg;base64,' + base64_data.__str__()[2:-1] + ')'
     return picData
 
+def supportChinese():   #增加支持中文的设定
+    plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+    plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
 @app.route('/', methods=['GET'])
 def home():
     print('send the GET request!')
@@ -57,6 +61,7 @@ def postHome():
         messages = '该图片是'+tem.content_type+'类型，已经显示出来了！'
 
     elif tem.filename.endswith('.pkl'):  #如果是pkl文件
+        supportChinese()
         ax = pickle.load(tem)
         data = None
         with open('tem.jpg','wb') as f:

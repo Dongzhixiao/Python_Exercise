@@ -21,11 +21,11 @@ def readConfig():
         load = json.load(f)
         return load
 
-KEY = ['fac917fb3f9246979a021bb6d189139f',
-       'bbe3653c09a54960b35b04c9a06aa480',
-       'bbe3653c09a54960b35b04c9a06aa480',
-       'bbe3653c09a54960b35b04c9a06aa480',
-       'df4c9f174d614f56810b0ebbdaa1a78c']
+KEY = ['a',
+       'b',
+       'c',
+       'd',
+       'e']   #这里输入你自己注册的KEY，详见http://www.tuling123.com/
 
 # I = 0
 
@@ -43,6 +43,8 @@ def get_response(msg,i):
     try:
         r = requests.post(apiUrl, data=data).json()
         # 字典的get方法在字典没有'text'值的时候会返回None而不会抛出异常
+        if 'url'in r:                                         
+            return r.get('text')+'\n网址是：' + r.get('url')      
         return r.get('text')
     # 为了防止服务器没有正常响应导致程序异常退出，这里用try-except捕获了异常
     # 如果服务器没能正常交互（返回非json或无法连接），那么就会进入下面的return
@@ -70,31 +72,40 @@ def fileHelper(msg):
     I = config['I']
     try:
         if msg['FromUserName'] == '@1dde4063ba4deff1ce21537aafcea605b339dcf888bbcdf9379fe4d7a5fa5ae5':   #这个是我的FromUserName，唯一值
-            theReture = ''
-            if msg['Text'] == '启动机器人':
+            theReturn = ''
+            if msg['Text'] in ['启动机器人','启动']:
                 writeConfig(True,I)
-                theReture = '机器人启动成功'        
-            elif msg['Text'] == '关闭机器人':
+                theReturn = '机器人启动成功'        
+            elif msg['Text'] in ['关闭机器人','关闭']:
                 writeConfig(False,I)
-                theReture= '机器人关闭成功'
-            elif msg['Text'] == '机器人1号' or msg['Text'] == '机器人一号':
+                theReturn= '机器人关闭成功'
+            elif msg['Text'] in ['机器人1号','机器人一号','1号','一号']:
                 writeConfig(OPEN,0)
-                theReture='机器人1号启动成功'
-            elif msg['Text'] == '机器人2号'or msg['Text'] == '机器人二号':
+                theReturn='机器人1号启动成功'
+            elif msg['Text'] in ['机器人2号','机器人二号','2号','二号']:
                 writeConfig(OPEN,1)
-                theReture = '机器人2号启动成功'
-            elif msg['Text'] == '机器人3号'or msg['Text'] == '机器人三号':
+                theReturn = '机器人2号启动成功'
+            elif msg['Text']  in ['机器人3号','机器人三号','3号','三号']:
                 writeConfig(OPEN,2)
-                theReture='机器人3号启动成功'
-            elif msg['Text'] == '机器人4号'or msg['Text'] == '机器人四号':
+                theReturn='机器人3号启动成功'
+            elif msg['Text']  in ['机器人4号','机器人四号','4号','四号']:
                 writeConfig(OPEN,3)
-                theReture='机器人4号启动成功'
-            elif msg['Text'] == '机器人5号'or msg['Text'] == '机器人五号':
+                theReturn='机器人4号启动成功'
+            elif msg['Text']  in ['机器人5号','机器人五号','5号','五号']:
                 writeConfig(OPEN,4)
-                theReture='机器人5号启动成功'
-            if theReture != '':
-                print(theReture)
-                itchat.send(theReture, 'filehelper')
+                theReturn='机器人5号启动成功'
+            elif msg['Text'] in ['信息']:
+                if OPEN:
+                    theReturn='机器人开启状态'
+                else:
+                    theReturn='机器人开启状态'
+                theReturn = theReturn + '\n机器人%s号正在服务' % I
+            elif msg['ToUserName'] == 'filehelper' and OPEN:
+                reply = get_response(msg['Text'], I)
+                itchat.send(reply, 'filehelper')
+            if theReturn != '':
+                print(theReturn)
+                itchat.send(theReturn, 'filehelper')
         else:
             if OPEN:
                 # 为了保证在图灵Key出现问题的时候仍旧可以回复，这里设置一个默认回复

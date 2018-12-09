@@ -25,13 +25,31 @@ KEY = ['a',
        'b',
        'c',
        'd',
-       'e']   #这里输入你自己注册的KEY，详见http://www.tuling123.com/
+       'e']
 
 # I = 0
 
 # OPEN = False
 
+def get_triple(msg):
+    # 这里实现与图灵机器人的交互
+    # 构造了要发送给服务器的数据
+    apiUrl = 'http://shuyantech.com/api/cndbpedia/avpair?q='
+    apiUrl = apiUrl + msg
+    try:
+        r = requests.get(apiUrl).json()
+        for i,j in r['ret']:
+            if i=='DESC':
+                return  j
+        return None
+    except:
+        return None
+
 def get_response(msg,i):
+    firstR = get_triple(msg)
+    if firstR != None:
+        print('来自复旦知识工厂的答案！')
+        return firstR
     # 这里实现与图灵机器人的交互
     # 构造了要发送给服务器的数据
     apiUrl = 'http://www.tuling123.com/openapi/api'
@@ -71,7 +89,7 @@ def fileHelper(msg):
     OPEN = config['OPEN']
     I = config['I']
     try:
-        if msg['FromUserName'] == '@1dde4063ba4deff1ce21537aafcea605b339dcf888bbcdf9379fe4d7a5fa5ae5':   #这个是我的FromUserName，唯一值
+        if msg['FromUserName'] == '@4230e2fbf1c7e8a967d1d1e46bf980c8464a71d39f4fd83611b20b421c6ffb2a':   #这个是我的FromUserName，唯一值
             theReturn = ''
             if msg['Text'] in ['启动机器人','启动']:
                 writeConfig(True,I)
@@ -98,14 +116,16 @@ def fileHelper(msg):
                 if OPEN:
                     theReturn='机器人开启状态'
                 else:
-                    theReturn='机器人开启状态'
-                theReturn = theReturn + '\n机器人%s号正在服务' % I
-            elif msg['ToUserName'] == 'filehelper' and OPEN:
+                    theReturn='机器人关闭状态'
+                theReturn = theReturn + '\n机器人%d号正在服务' % (I+1)
+            elif OPEN: #and msg['ToUserName'] == 'filehelper':
                 reply = get_response(msg['Text'], I)
-                itchat.send(reply, 'filehelper')
+                reply = '【机器人%d号】' %(I+1) + reply
+                itchat.send(reply, msg['ToUserName']) # 'filehelper')
             if theReturn != '':
+                theReturn = "【提示】" + theReturn
                 print(theReturn)
-                itchat.send(theReturn, 'filehelper')
+                itchat.send(theReturn, msg['ToUserName'])
         else:
             if OPEN:
                 # 为了保证在图灵Key出现问题的时候仍旧可以回复，这里设置一个默认回复
@@ -114,6 +134,7 @@ def fileHelper(msg):
                 reply = get_response(msg['Text'],I)
                 # a or b的意思是，如果a有内容，那么返回a，否则返回b
                 # 有内容一般就是指非空或者非None，你可以用`if a: print('True')`来测试
+                reply = '【机器人%d号】' %(I+1) + reply 
                 print(reply)
                 return reply or defaultReply
     except  Exception as e:

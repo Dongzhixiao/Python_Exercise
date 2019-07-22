@@ -12,7 +12,7 @@ from scipy import cluster
 import matplotlib.pyplot as plt
 from sklearn import decomposition as skldec #用于主成分分析降维的包
 
-df = pd.read_excel("test.xlsx")
+df = pd.read_excel("test.xlsx",index_col=0)
 #df = df.T    #python默认每行是一个样本，如果数据每列是一个样本的话，转置一下即可
 
 #开始画层次聚类树状图    
